@@ -1,5 +1,7 @@
 from selenium import webdriver
 from products_page_scraper.amazon_products_page_scraper import AmazonProductsPageScraper
+from products_page_scraper.meli_products_page_scraper import MeliProductsPageScraper
+from products_page_scraper.product_repository import ProductRepository
 
 def init():
     item = input('Ingrese el nombre del producto a buscar: ')
@@ -26,6 +28,53 @@ def init():
     #Aqui iteramos la lista que nos da el metodo en amazon_products para mostrarlos al usuario
     for item in amazon_products:
         print('{}. Producto: {}. \nPrecio: ${}'.format(item.id, item.name, item.price), end='\n\n')
+
+    #Hacemos que el usuario elija el id del producto que prefiera con un input
+    amazon_product_id = input('Ingrese el id del producto de amazon deseado: ')
+
+    for i in amazon_products:
+        if amazon_product_id == str(i.id):
+            db_amznurl = i.url 
+            db_amznprice = i.price
+            break
+
+    #Guardamos en una variable el producto elegido de la lista que tiene todos los productos con esta funcion lambda
+    amazon_product = next(filter(lambda product: product.id == int(amazon_product_id), amazon_products))
+
+
+
+    #Hacemos el mismo proceso pero con los productos de mercado libre
+    meli_products_page_scraper = MeliProductsPageScraper(driver=webdriver.Chrome(options=options))
+    meli_search_result_html = meli_products_page_scraper.get_html(meli_search_result_url)
+
+    meli_products = meli_products_page_scraper.get_products(html_content=meli_search_result_html)
+
+    contador = 0
+    for item in meli_products:
+        contador +=1
+        print('{}. Producto: {}. \nPrecio: ${}'.format(item.id, item.name, item.price), end='\n\n')
+        if contador == 5:
+            break
+
+    meli_product_id = input('Ingrese el id del producto de mercado libre deseado: ')
+
+    for i in meli_products:
+        if meli_product_id == str(i.id):
+            db_meliurl = i.url 
+            db_meliprice = i.price
+            break
+
+    meli_product = next(filter(lambda product: product.id == int(meli_product_id), meli_products))
+    
+
+    #Guardamos los productos elegido en la bbdd
+    ProductRepository().save_product(
+        name=item,
+        amazon_url=str(db_amznurl),
+        meli_url=str(db_meliurl),
+        amazon_price=str(db_amznprice),
+        meli_price=str(db_meliprice)
+    )
 
 
 if __name__ == '__main__':

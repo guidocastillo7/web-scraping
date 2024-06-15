@@ -10,6 +10,6 @@
 
 - Url de resultado:     https://listado.mercadolibre.com.ec/<item>
 - Producto:             div.ui-search-result__wrapper
-- Nombre:               h2.poly-box
+- Nombre:               h2.ui-search-item__title
 - Precio:               span.andes-money-amount__fraction
-- URL:                  a.poly-component__title
+- URL:                  a.ui-search-item__group__element ui-search-link__title-card ui-search-link
