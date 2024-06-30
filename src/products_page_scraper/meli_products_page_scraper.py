@@ -28,11 +28,11 @@ class MeliProductsPageScraper(ProductsPageScraper):
 
         for index, item in enumerate(products_div_list):
             try:
-                item_name = item.find('h2', {'class':'ui-search-item__title'}).text
+                item_name = item.find('h2', {'class':'poly-box'}).text
 
                 item_price = item.find('span', {'class':'andes-money-amount__fraction'}).text
 
-                item_url = item.find('a', {'class':'ui-search-item__group__element ui-search-link__title-card ui-search-link'}).attrs['href']
+                item_url = item.find('a', {'class':'poly-component__title'}).attrs['href']
 
                 products.append(Product(id=index+1, name=item_name, price=item_price, url=item_url))
 

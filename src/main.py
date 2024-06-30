@@ -26,8 +26,12 @@ def init():
     amazon_products = amazon_products_page_scraper.get_products(html_content=amazon_search_result_html)
 
     #Aqui iteramos la lista que nos da el metodo en amazon_products para mostrarlos al usuario
+    contador1 = 0
     for item in amazon_products:
+        contador1 +=1
         print('{}. Producto: {}. \nPrecio: ${}'.format(item.id, item.name, item.price), end='\n\n')
+        if contador1 == 5:
+            break
 
     #Hacemos que el usuario elija el id del producto que prefiera con un input
     amazon_product_id = input('Ingrese el id del producto de amazon deseado: ')
@@ -49,11 +53,11 @@ def init():
 
     meli_products = meli_products_page_scraper.get_products(html_content=meli_search_result_html)
 
-    contador = 0
+    contador2 = 0
     for item in meli_products:
-        contador +=1
+        contador2 +=1
         print('{}. Producto: {}. \nPrecio: ${}'.format(item.id, item.name, item.price), end='\n\n')
-        if contador == 5:
+        if contador2 == 5:
             break
 
     meli_product_id = input('Ingrese el id del producto de mercado libre deseado: ')
